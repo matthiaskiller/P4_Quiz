@@ -30,7 +30,7 @@ const add = (question, answer) => {
 };
 
 
-exports.update = (id, question, update) {
+exports.update = (id, question, update) => {
     const quiz = quizzes[id];
     if(typeof quiz == "undefined")  {
       throw new Error(`El valor del parámetro id no es vaálido.` );
