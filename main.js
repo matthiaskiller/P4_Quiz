@@ -1,6 +1,9 @@
 const readline = require('readline');
-const model = require('./model');
-const {log, biglog, errorlog, colorize} = require('./out');
+
+
+const {log, biglog, errorlog, colorize} = require("./out");
+
+const cmds = require("./cmds");
 
 biglog('CORE Quiz', 'green');
 
@@ -31,45 +34,45 @@ rl.on('line', (line) => {
 
     case 'help':
     case 'h':
-      helpCmd();
+      cmds.helpCmd(rl);
       break;
 
     case 'list':
-      listCmd();
+      cmds.listCmd(rl);
       break;
 
     case 'show':
-      showCmd(args[1]);
+      cmds.showCmd(rl, args[1]);
       break;
 
     case'add':
-      addCmd();
+      cmds.addCmd(rl);
       break;
 
     case 'delete':
-      deleteCmd(args[1]);
+      cmds.deleteCmd(rl, args[1]);
       break;
 
     case 'edit':
-      editCmd(args[1]);
+      cmds.editCmd(rl, args[1]);
       break;
 
     case 'test':
-      testCmd(args[1]);
+      cmds.testCmd(rl, args[1]);
       break;
 
     case 'play':
     case 'p':
-      playCmd();
+      cmds.playCmd(rl);
       break;
 
     case 'credits':
-      creditsCmd();
+      cmds.creditsCmd(rl);
       break;
 
     case'q':
     case 'quit':
-      quitCmd();
+      cmds.quitCmd(rl);
       break;
 
 
@@ -86,65 +89,3 @@ rl.on('line', (line) => {
   console.log('Adios!');
   process.exit(0);
 });
-
-
-const helpCmd = () => {
-  log("Commandos:");
-  log("  h|help - Muestra esta ayuda.");
-  log("  list - Listar los quizzes existentes.");
-  log("  show <id> - Muestra la pregunta y la respuesta el quiz indicado.");
-  log("  add - Añadir un nuevo quiz interactivamente.");
-  log("  delete <id> - Borrar el quiz indicado.");
-  log("  edit <id> - Editar el quiz indicado.");
-  log("  test <id> - Probar el quiz indicado.");
-  log("  p|play - Jugar a preguntar aleatoriamente todos los quizzes.");
-  log("  credits - Créditos.");
-  log("  q|quit - Salir del programa.");
-  rl.prompt();
-};
-
-
-const listCmd = () => {
-  log('list - Listar los quizzes existentes.');
-  rl.prompt();
-};
-
-const showCmd = id => {
-  log('show <id> - Muestra la pregunta y la respuesta el quiz indicado.');
-  rl.prompt();
-};
-
-const addCmd = () => {
-  log('add - Añadir un nuevo quiz interactivamente.');
-  rl.prompt();
-};
-
-const deleteCmd = id => {
-  log('delete <id> - Borrar el quiz indicado.');
-  rl.prompt();
-};
-
-const editCmd = id => {
-  log('edit <id> - Editar el quiz indicado.');
-  rl.prompt();
-};
-
-const testCmd = id => {
-  log('test <id> - Probar el quiz indicado.');
-  rl.prompt();
-};
-
-const playCmd = () => {
-  log('p|play - Jugar a preguntar aleatoriamente todos los quizzes.');
-  rl.prompt();
-};
-
-const creditsCmd = () => {
-  log('Autor de la práctica:');
-  log('Matthias Killer','green');
-  rl.prompt();
-};
-
-const quitCmd = () => {
-  rl.close();
-};
