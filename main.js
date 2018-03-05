@@ -3,16 +3,32 @@ const readline = require('readline');
 const figlet = require('figlet');
 const chalk = require('chalk');
 
-console.log(chalk.green.bold(
-                  figlet.textSync('CORE Quiz', {horizontalLayout: 'full'})
-                )
-);
+const colorize = (msg, color) => {
+    if(typeof color !== "undefined") {
+      msg = chalk[color].bold(msg);
+    }
+    return msg;
+};
 
+const log = (msg, color) => {
+  console.log(colorize(msg,color));
+};
+
+
+const biglog = (msg, color) => {
+  log(figlet.textSync(msg,{horizontalLayout: 'full'}), color);
+};
+
+const errorlog = (emsg) => {
+  console.log(`${colorize("Error","red")}: ${colorize(colorize(emsg, "red"), "bgYellowBright" )}`);
+};
+
+biglog('CORE Quiz', 'green');
 
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
-  prompt: 'quiz> ',
+  prompt: colorize("quiz > ",'blue'),
   completer: (line) => {
     const completions = 'h help list show add delete edit test p play credits q quit'.split(' ');
     const hits = completions.filter((c) => c.startsWith(line));
@@ -79,8 +95,8 @@ rl.on('line', (line) => {
 
 
     default:
-      console.log(`Comando desconocido: '${cmd}'`);
-      console.log(`Use 'help' para ver todos los comandos disponibles.`);
+      console.log(`Comando desconocido: '${colorize(cmd,'red')}'`);
+      console.log(`Use ${colorize('help','green')} para ver todos los comandos disponibles.`);
       rl.prompt();
       break;
   }
@@ -94,63 +110,62 @@ rl.on('line', (line) => {
 
 
 const helpCmd = () => {
-  console.log("Commandos:");
-  console.log("  h|help - Muestra esta ayuda.");
-  console.log("  list - Listar los quizzes existentes.");
-  console.log("  show <id> - Muestra la pregunta y la respuesta el quiz indicado.");
-  console.log("  add - Añadir un nuevo quiz interactivamente.");
-  console.log("  delete <id> - Borrar el quiz indicado.");
-  console.log("  edit <id> - Editar el quiz indicado.");
-  console.log("  test <id> - Probar el quiz indicado.");
-  console.log("  p|play - Jugar a preguntar aleatoriamente todos los quizzes.");
-  console.log("  credits - Créditos.");
-  console.log("  q|quit - Salir del programa.");
+  log("Commandos:");
+  log("  h|help - Muestra esta ayuda.");
+  log("  list - Listar los quizzes existentes.");
+  log("  show <id> - Muestra la pregunta y la respuesta el quiz indicado.");
+  log("  add - Añadir un nuevo quiz interactivamente.");
+  log("  delete <id> - Borrar el quiz indicado.");
+  log("  edit <id> - Editar el quiz indicado.");
+  log("  test <id> - Probar el quiz indicado.");
+  log("  p|play - Jugar a preguntar aleatoriamente todos los quizzes.");
+  log("  credits - Créditos.");
+  log("  q|quit - Salir del programa.");
   rl.prompt();
 };
 
 
 const listCmd = () => {
-  console.log('list - Listar los quizzes existentes.');
+  log('list - Listar los quizzes existentes.');
   rl.prompt();
 };
 
 const showCmd = id => {
-  console.log('show <id> - Muestra la pregunta y la respuesta el quiz indicado.');
+  log('show <id> - Muestra la pregunta y la respuesta el quiz indicado.');
   rl.prompt();
 };
 
 const addCmd = () => {
-  console.log('add - Añadir un nuevo quiz interactivamente.');
+  log('add - Añadir un nuevo quiz interactivamente.');
   rl.prompt();
 };
 
 const deleteCmd = id => {
-  console.log('delete <id> - Borrar el quiz indicado.');
+  log('delete <id> - Borrar el quiz indicado.');
   rl.prompt();
 };
 
 const editCmd = id => {
-  console.log('edit <id> - Editar el quiz indicado.');
+  log('edit <id> - Editar el quiz indicado.');
   rl.prompt();
 };
 
 const testCmd = id => {
-  console.log('test <id> - Probar el quiz indicado.');
+  log('test <id> - Probar el quiz indicado.');
   rl.prompt();
 };
 
 const playCmd = () => {
-  console.log('p|play - Jugar a preguntar aleatoriamente todos los quizzes.');
+  log('p|play - Jugar a preguntar aleatoriamente todos los quizzes.');
   rl.prompt();
 };
 
 const creditsCmd = () => {
-  console.log('Autor de la práctica:');
-  console.log('Matthias Killer');
+  log('Autor de la práctica:');
+  log('Matthias Killer','green');
   rl.prompt();
 };
 
 const quitCmd = () => {
   rl.close();
-  rl.prompt();
 };
