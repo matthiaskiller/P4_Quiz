@@ -1,9 +1,10 @@
 const readline = require('readline');
-
-
 const {log, biglog, errorlog, colorize} = require("./out");
-
 const cmds = require("./cmds");
+
+
+
+
 
 biglog('CORE Quiz', 'green');
 
@@ -82,7 +83,6 @@ rl.on('line', (line) => {
       rl.prompt();
       break;
   }
-
 
 })
 .on('close', () => {
