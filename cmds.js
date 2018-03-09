@@ -76,14 +76,24 @@ exports.editCmd = (rl, id) => {
   }
   else {
     try {
+
+      const quiz = model.getByIndex(id);
+
+      process.stdout.isTTY && setTimeout(() => {rl.write(quiz.question)},0);
+
       rl.question(colorize('Introduzca una pregunta:  ', 'red'), question => {
+
+        process.stdout.isTTY && setTimeout(() => {rl.write(quiz.answer)},0);
+
         rl.question(colorize('Introduzca la repuesta:  ', 'red'), answer => {
+
           model.update(id, question, answer);
           log(` Se ha cambiado el quiz ${colorize(id, 'magenta')} por: ${question}  ${colorize('=>', 'magenta')} ${answer}`);
           rl.prompt();
         });
       });
     }
+
     catch(error) {
       errorlog(error.message);
       rl.prompt();
