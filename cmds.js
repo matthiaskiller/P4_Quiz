@@ -43,8 +43,14 @@ exports.showCmd = (rl, id) => {
 };
 
 exports.addCmd = rl => {
-  log('add - Añadir un nuevo quiz interactivamente.');
-  rl.prompt();
+
+  rl.question(colorize('Introduzca una pregunta:  ', 'red'), question => {
+    rl.question(colorize('Introduzca la repuesta:  ', 'red'), answer => {
+      model.add(question, answer);
+      log(` ${colorize('Se ha añadido', 'magenta')}: ${question}  ${colorize('=>', 'magenta')} ${answer}`);
+      rl.prompt();
+    });
+  });
 };
 
 exports.deleteCmd = (rl, id) => {
