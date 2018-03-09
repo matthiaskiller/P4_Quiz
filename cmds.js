@@ -54,13 +54,41 @@ exports.addCmd = rl => {
 };
 
 exports.deleteCmd = (rl, id) => {
-  log('delete <id> - Borrar el quiz indicado.');
+
+  if(typeof id === "undefined") {
+    errorlog(`Falta el párametro id.`);
+  }
+  else {
+    try {
+      model.deleteByIndex(id);
+    }
+    catch(error) {
+      errorlog(error.message)
+    }
+  }
   rl.prompt();
 };
 
 exports.editCmd = (rl, id) => {
-  log('edit <id> - Editar el quiz indicado.');
-  rl.prompt();
+
+  if(typeof id === "undefined") {
+    errorlog(`Falta el párametro id.`);
+  }
+  else {
+    try {
+      rl.question(colorize('Introduzca una pregunta:  ', 'red'), question => {
+        rl.question(colorize('Introduzca la repuesta:  ', 'red'), answer => {
+          model.update(id, question, answer);
+          log(` Se ha cambiado el quiz ${colorize(id, 'magenta')} por: ${question}  ${colorize('=>', 'magenta')} ${answer}`);
+          rl.prompt();
+        });
+      });
+    }
+    catch(error) {
+      errorlog(error.message);
+      rl.prompt();
+    }
+  }
 };
 
 exports.testCmd = (rl, id) => {
