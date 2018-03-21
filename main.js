@@ -30,7 +30,7 @@ rl.on('line', (line) => {
 
   switch (cmd) {
     case '':
-      rl.promt();
+      rl.prompt();
       break;
 
     case 'help':
