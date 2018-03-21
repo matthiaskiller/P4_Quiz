@@ -132,8 +132,55 @@ exports.testCmd = (rl, id) => {
 };
 
 exports.playCmd = rl => {
-  log('p|play - Jugar a preguntar aleatoriamente todos los quizzes.');
-  rl.prompt();
+
+  let score = 0;
+  let numberOfQuestions = 0;
+  let toBeResolved = [];
+
+  model.getAll().forEach((quiz, id) => {
+    toBeResolved[id] = id;
+    numberOfQuestions++;
+  });
+
+
+  log(`numberOfQuestions: ${numberOfQuestions}\n`);
+
+  //for meter id
+  const playOne = () => {
+    if (toBeResolved === undefined || toBeResolved.length == 0) {
+      log(`No hay nada más que preguntar.`);
+      log(`Fin del examen. Aciertos:\n`);
+      biglog(score, 'magenta');
+      rl.prompt();
+    }
+    else {
+      let id = Math.floor(Math.random() * numberOfQuestions);
+
+      let quiz = model.getByIndex(toBeResolved[id]);
+
+      if (id > -1) {
+      toBeResolved.splice(id, 1);
+      numberOfQuestions--;
+      }
+
+      rl.question(colorize(quiz.question +  '? ', 'red'), (answer) => {
+
+        if(answer.trim().toUpperCase() === quiz.answer.toUpperCase()) {
+          score++;
+          log(`CORRECTO - Lleva ${score} aciertos`);
+          playOne();
+        }
+        else {
+          log(`INCORRECTO.\nFin del examen. Aciertos:\n`);
+          biglog(score, 'magenta');
+          rl.prompt();
+        }
+      });
+
+    }
+  }
+
+  playOne();
 };
 
 exports.creditsCmd = rl => {
