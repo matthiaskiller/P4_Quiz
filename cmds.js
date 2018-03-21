@@ -102,8 +102,33 @@ exports.editCmd = (rl, id) => {
 };
 
 exports.testCmd = (rl, id) => {
-  log('test <id> - Probar el quiz indicado.');
-  rl.prompt();
+
+  if(typeof id === "undefined") {
+    errorlog(`Falta el párametro id.`);
+  }
+  else {
+    try {
+      const quiz = model.getByIndex(id);
+
+      rl.question(colorize(quiz.question +  '? ', 'red'), (answer) => {
+
+        log(`Su respuesta es:\n`);
+
+        if(answer.trim().toUpperCase() === quiz.answer.toUpperCase()) {
+          biglog('Correcta', 'green');
+        }
+        else {
+          biglog('Incorrecta', 'red');
+        }
+        rl.prompt();
+      });
+    }
+
+    catch(error) {
+      errorlog(error.message);
+      rl.prompt();
+    }
+  }
 };
 
 exports.playCmd = rl => {
