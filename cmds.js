@@ -197,14 +197,28 @@ exports.playCmd = rl => {
   let numberOfQuestions = 0;
   let toBeResolved = [];
 
-  model.getAll().forEach((quiz, id) => {
-    toBeResolved[id] = id;
-    numberOfQuestions++;
+  models.quiz.findAll()
+  .then(quiz => {
+    quiz.forEach(entrance => {
+      toBeResolved[numberOfQuestions] = entrance.id;
+      log(`numberOfQuestions: ${numberOfQuestions}  id: ${entrance.id}\n`);
+      numberOfQuestions++;
+    })
+  })
+  .catch(error => {
+    errorlog(error.message);
+  })
+  .then(() => {
+    rl.prompt();
   });
 
 
-  log(`numberOfQuestions: ${numberOfQuestions}\n`);
 
+
+
+
+//  log(`numberOfQuestions: ${numberOfQuestions}\n`);
+/*
   //for meter id
   const playOne = () => {
     if (toBeResolved === undefined || toBeResolved.length == 0) {
@@ -241,6 +255,7 @@ exports.playCmd = rl => {
   }
 
   playOne();
+*/
 };
 
 exports.creditsCmd = rl => {
