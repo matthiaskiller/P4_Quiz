@@ -248,46 +248,6 @@ exports.playCmd = rl => {
   });
 
 
-
-
-
-/*
-  const playOne = () => {
-    if (toBeResolved === undefined || toBeResolved.length == 0) {
-      log(`No hay nada más que preguntar.`);
-      log(`Fin del examen. Aciertos:\n`);
-      biglog(score, 'magenta');
-      rl.prompt();
-    }
-    else {
-      let id = Math.floor(Math.random() * numberOfQuestions);
-
-      let quiz = model.getByIndex(toBeResolved[id]);
-
-      if (id > -1) {
-      toBeResolved.splice(id, 1);
-      numberOfQuestions--;
-      }
-
-      rl.question(colorize(quiz.question +  '? ', 'red'), (answer) => {
-
-        if(answer.trim().toUpperCase() === quiz.answer.toUpperCase()) {
-          score++;
-          log(`CORRECTO - Lleva ${score} aciertos`);
-          playOne();
-        }
-        else {
-          log(`INCORRECTO.\nFin del examen. Aciertos:\n`);
-          biglog(score, 'magenta');
-          rl.prompt();
-        }
-      });
-
-    }
-  }
-
-  playOne();
-*/
 };
 
 exports.creditsCmd = rl => {
