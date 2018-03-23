@@ -201,9 +201,44 @@ exports.playCmd = rl => {
   .then(quiz => {
     quiz.forEach(entrance => {
       toBeResolved[numberOfQuestions] = entrance.id;
-      log(`numberOfQuestions: ${numberOfQuestions}  id: ${entrance.id}\n`);
       numberOfQuestions++;
     })
+    const playOne = () => {
+      if (toBeResolved === undefined || toBeResolved.length == 0) {
+        log(`No hay nada más que preguntar.`);
+        log(`Fin del examen. Aciertos:\n`);
+        biglog(score, 'magenta');
+        rl.prompt();
+      }
+      else {
+        let id = Math.floor(Math.random() * numberOfQuestions);
+        validateId(id)
+        .then(id => models.quiz.findById(toBeResolved[id]))
+        .then(quiz => {
+
+          if (id > -1) {
+          toBeResolved.splice(id, 1);
+          numberOfQuestions--;
+          }
+
+          rl.question(colorize(quiz.question +  '? ', 'red'), (answer) => {
+
+            if(answer.trim().toUpperCase() === quiz.answer.toUpperCase()) {
+              score++;
+              log(`CORRECTO - Lleva ${score} aciertos`);
+              playOne();
+            }
+            else {
+              log(`INCORRECTO.\nFin del examen. Aciertos:\n`);
+              biglog(score, 'magenta');
+              rl.prompt();
+            }
+          });
+        })
+      }
+    }
+    playOne();
+
   })
   .catch(error => {
     errorlog(error.message);
@@ -216,10 +251,7 @@ exports.playCmd = rl => {
 
 
 
-
-//  log(`numberOfQuestions: ${numberOfQuestions}\n`);
 /*
-  //for meter id
   const playOne = () => {
     if (toBeResolved === undefined || toBeResolved.length == 0) {
       log(`No hay nada más que preguntar.`);
